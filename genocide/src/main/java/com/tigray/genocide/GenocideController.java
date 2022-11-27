@@ -1,12 +1,13 @@
 package com.tigray.genocide;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,35 +31,27 @@ public GenocideIncidence getGenocideIncidentById (@PathVariable String id){
     return genocideRepository.findById(id).orElse(null);
 }
 
-// @GetMapping("/{id}")
-// public GenocideSite getUser(@PathVariable String id){
-//     return  userRepository.findById(id).orElse(null);
-// }
-
 @PostMapping(path = "/addGenocideIncidence",consumes = "application/json", produces = "application/json")
 public GenocideIncidence addGenocideSite(@RequestBody GenocideIncidence genocideIncidences){
-    // genocideIncidences.setId("001");
-    // genocideIncidences.setCommitedBy("Tafere");
-    // genocideIncidences.setEvidenceId(01);
-    // genocideIncidences.setIncidentDate(new Date());
-    // genocideIncidences.setNumVictims(200);
     genocideRepository.save(genocideIncidences);
     return genocideIncidences;
 }
 
-// @PutMapping("/")
-// public GenocideSite editUser(@RequestBody GenocideSite newUser){
-//     GenocideSite oldUser = userRepository.findById(newUser.getId()).orElse(null);
-//     oldUser.setName(newUser.getName());
-//     oldUser.setEmail(newUser.getEmail());
-//     oldUser.setPassword(newUser.getPassword());
-//     return  oldUser;
-// }
+@PutMapping(path = "/editGenocideIncidence",consumes = "application/json", produces = "application/json")
+public GenocideIncidence editGenocideSite(@RequestBody GenocideIncidence modifiedIncident){
+    GenocideIncidence originalIncident = genocideRepository.findById(modifiedIncident.getId()).orElse(null);
+    originalIncident.setIncidentDate(modifiedIncident.getIncidentDate());
+    originalIncident.setNumVictims(modifiedIncident.getNumVictims());
+    originalIncident.setEvidenceId(modifiedIncident.getEvidenceId());
+    originalIncident.setCommitedBy(modifiedIncident.getCommitedBy());
+    genocideRepository.save(originalIncident);
+    return  originalIncident;
+}
 
-// @DeleteMapping("/{id}")
-// public String deleteUser(@PathVariable String id){
-//       userRepository.deleteById(id);
-//     return id;
-// }
+@DeleteMapping(path = "/deleteGenocideIncidentById/{id}", produces = "application/json")
+public String deleteGenocideSite(@PathVariable String id){
+    genocideRepository.deleteById(id);
+    return id;
+}
 
 }
