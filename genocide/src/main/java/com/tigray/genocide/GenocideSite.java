@@ -14,8 +14,8 @@ public class GenocideSite{
     @Id
     private String id;
     private String name;
-    private String latitude;
-    private String longitude;
+    private double latitude;
+    private double longitude;
     private String region;
     private String country;
 }
